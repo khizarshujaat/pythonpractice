@@ -1,4 +1,10 @@
-
 Modules is a file contain functions
 Library has Modules
 Frameworks contain libraries
+
+## 29th June 2025
+Streamlit_UI library
+
+To run
+streamlit run {filename}
+streamlit run main.py
