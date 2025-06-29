@@ -1,6 +1,6 @@
 import streamlit as st
 
-st.title("Grading System")
+st.title("Corvit Grading System...")
 
 marks = st.number_input("Enter Obtain marks:", min_value=1)
 total = st.number_input("Enter total marks:", min_value=1)
