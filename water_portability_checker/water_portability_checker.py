@@ -114,15 +114,7 @@ if submitted:
             "Trihalomethanes": trihalomethanes,
             "Turbidity": turbidity,
         }
-        # potable, score, checks = evaluate_potability(inputs)
         prediction_result, checks = evaluate_potability(inputs)
-        # values = [
-        #     ph, hardness, solids, chloramines, sulfate,
-        #     conductivity, organic_carbon, trihalomethanes, turbidity
-        # ]
-        # X = np.array([values], dtype=float)
-
-        # pred = model.predict(X)[0]
 
     if prediction_result == 1:
         st.success("✅ Water is **Potable**")
