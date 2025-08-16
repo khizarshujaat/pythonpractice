@@ -3,11 +3,17 @@ import numpy as np
 import joblib
 import os
 
-MODEL_PATH = "water_potability_rf.pkl"
+# MODEL_PATH = "water_potability_rf.pkl"
 
 st.set_page_config(page_title="Water Potability Checker", page_icon="🚰", layout="centered")
 
 st.title("🚰 Water Potability Checker")
+
+# Get the directory where this script lives
+BASE_DIR = os.path.dirname(__file__)
+
+# Point to the pkl file in the same folder
+MODEL_PATH = os.path.join(BASE_DIR, "water_potability_rf.pkl")
 
 # Load model bundle
 if not os.path.exists(MODEL_PATH):
