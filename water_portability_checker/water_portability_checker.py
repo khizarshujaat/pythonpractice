@@ -63,36 +63,42 @@ with st.form("water_form", clear_on_submit=False):
     submitted = st.form_submit_button("Predict")
 
 # --- Rule thresholds (adjust as needed) ---
-# THRESHOLDS = {
-#     "pH": (0.0, 14.0),
-#     "Hardness": (0, 400),
-#     "TDS": (0, 100000),
-#     "Chloramines": (0, 100),
-#     "Sulfate": (0, 1000),
-#     "Conductivity": (0, 1000),
-#     "Organic Carbon": (0, 100),
-#     "THMs": (0, 1000),
-#     "Turbidity": (0, 100),
-# }
+THRESHOLDS = {
+    "pH": (0.0, 14.0),
+    "Hardness": (0, 400),
+    "TDS": (0, 100000),
+    "Chloramines": (0, 100),
+    "Sulfate": (0, 1000),
+    "Conductivity": (0, 1000),
+    "Organic Carbon": (0, 100),
+    "THMs": (0, 1000),
+    "Turbidity": (0, 100),
+}
 
-# def check_range(value, lo, hi):
-#     return lo <= value <= hi
+def check_range(value, lo, hi):
+    return lo <= value <= hi
 
-# def evaluate_potability(inputs):
-#     checks = {
-#         "pH": check_range(inputs["pH"], *THRESHOLDS["pH"]),
-#         "Hardness": check_range(inputs["Hardness"], *THRESHOLDS["Hardness"]),
-#         "TDS": check_range(inputs["TDS"], *THRESHOLDS["TDS"]),
-#         "Chloramines": check_range(inputs["Chloramines"], *THRESHOLDS["Chloramines"]),
-#         "Sulfate": check_range(inputs["Sulfate"], *THRESHOLDS["Sulfate"]),
-#         "Conductivity": check_range(inputs["Conductivity"], *THRESHOLDS["Conductivity"]),
-#         "Organic Carbon": check_range(inputs["Organic Carbon"], *THRESHOLDS["Organic Carbon"]),
-#         "THMs": check_range(inputs["THMs"], *THRESHOLDS["THMs"]),
-#         "Turbidity": check_range(inputs["Turbidity"], *THRESHOLDS["Turbidity"]),
-#     }
-#     score = sum(checks.values())  # 0..9
-#     potable = score >= 7  # require most parameters to be within target ranges
-#     return potable, score, checks
+def evaluate_potability(inputs):
+    checks = {
+        "pH": check_range(inputs["pH"], *THRESHOLDS["pH"]),
+        "Hardness": check_range(inputs["Hardness"], *THRESHOLDS["Hardness"]),
+        "TDS": check_range(inputs["TDS"], *THRESHOLDS["TDS"]),
+        "Chloramines": check_range(inputs["Chloramines"], *THRESHOLDS["Chloramines"]),
+        "Sulfate": check_range(inputs["Sulfate"], *THRESHOLDS["Sulfate"]),
+        "Conductivity": check_range(inputs["Conductivity"], *THRESHOLDS["Conductivity"]),
+        "Organic Carbon": check_range(inputs["Organic Carbon"], *THRESHOLDS["Organic Carbon"]),
+        "THMs": check_range(inputs["THMs"], *THRESHOLDS["THMs"]),
+        "Turbidity": check_range(inputs["Turbidity"], *THRESHOLDS["Turbidity"]),
+    }
+    values = [
+        inputs["pH"], inputs["Hardness"], inputs["TDS"], inputs["Chloramines"], inputs["Sulfate"],
+        inputs["Conductivity"], inputs["Organic Carbon"], inputs["THMs"], inputs["Turbidity"]
+    ]
+    X = np.array([values], dtype=float)
+
+    pred = model.predict(X)[0]
+
+    return pred
 
 if submitted:
     with st.spinner("Evaluating water quality..."):
@@ -108,19 +114,16 @@ if submitted:
             "Turbidity": turbidity,
         }
         # potable, score, checks = evaluate_potability(inputs)
-        values = [
-            ph, hardness, solids, chloramines, sulfate,
-            conductivity, organic_carbon, trihalomethanes, turbidity
-        ]
-        X = np.array([values], dtype=float)
+        prediction_result = evaluate_potability(inputs)
+        # values = [
+        #     ph, hardness, solids, chloramines, sulfate,
+        #     conductivity, organic_carbon, trihalomethanes, turbidity
+        # ]
+        # X = np.array([values], dtype=float)
 
-        pred = model.predict(X)[0]
-        potable_prob = None
-        if hasattr(model, "predict_proba"):
-            proba = model.predict_proba(X)[0]
-            potable_prob = float(proba[1])
+        # pred = model.predict(X)[0]
 
-    if pred == 1:
+    if prediction_result == 1:
         st.success("✅ Water is **Potable**")
     else:
         st.error("❌ Water is **Not Potable**")
