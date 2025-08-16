@@ -98,7 +98,7 @@ def evaluate_potability(inputs):
 
     pred = model.predict(X)[0]
 
-    return pred
+    return pred, checks
 
 if submitted:
     with st.spinner("Evaluating water quality..."):
@@ -114,7 +114,7 @@ if submitted:
             "Turbidity": turbidity,
         }
         # potable, score, checks = evaluate_potability(inputs)
-        prediction_result = evaluate_potability(inputs)
+        prediction_result, checks = evaluate_potability(inputs)
         # values = [
         #     ph, hardness, solids, chloramines, sulfate,
         #     conductivity, organic_carbon, trihalomethanes, turbidity
