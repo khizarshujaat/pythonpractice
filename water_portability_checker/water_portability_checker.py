@@ -128,8 +128,8 @@ if submitted:
     else:
         st.error("❌ Water is **Not Potable**")
 
-    # with st.expander("See parameter-by-parameter checks"):
-    #     for name, ok in checks.items():
-    #         rng = THRESHOLDS[name] if name != "THMs" else THRESHOLDS["THMs"]
-    #         badge = "✅ OK" if ok else "⚠️ Out of range"
-    #         st.write(f"- **{name}**: {inputs[name]} (target: {rng[0]}–{rng[1]}) {badge}")
+    with st.expander("See parameter-by-parameter checks"):
+        for name, ok in checks.items():
+            rng = THRESHOLDS[name] if name != "THMs" else THRESHOLDS["THMs"]
+            badge = "✅ OK" if ok else "⚠️ Out of range"
+            st.write(f"- **{name}**: {inputs[name]} (target: {rng[0]}–{rng[1]}) {badge}")
