@@ -26,7 +26,7 @@ FEATURES = bundle["features"]
 test_acc = bundle.get("test_accuracy", None)
 
 if test_acc is not None:
-    st.caption(f"Loaded model • Test accuracy at train time: {test_acc:.4f}")
+    st.caption(f"Loaded model • Test accuracy at train time: **{test_acc:.4f}**")
 
 st.write("Enter the measurements and click **Predict** to see if the water is likely potable.")
 
@@ -59,8 +59,9 @@ with st.form("water_form", clear_on_submit=False):
     #     trihalomethanes = st.number_input("Trihalomethanes", min_value=0.0, value=100.341674, step=0.000001, format="%.6f", help="Typically ≤ 1000")
     #     turbidity = st.number_input("Turbidity", min_value=0.0, value=4.916218, step=4.628771, format="%.6f", help="Typically ≤ 100")
 
-
-    submitted = st.form_submit_button("Predict")
+    c1, c2, c3 = st.columns([1, 1, 1])
+    with c2:
+        submitted = st.form_submit_button("Predict", use_container_width=True)
 
 # --- Rule thresholds (adjust as needed) ---
 THRESHOLDS = {
