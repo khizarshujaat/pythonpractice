@@ -3,5 +3,5 @@
   <component name="Black">
     <option name="sdkName" value="WEB-UI" />
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="WEB-UI" project-jdk-type="Python SDK" />
+  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.13 (pythonpractice)" project-jdk-type="Python SDK" />
 </project>
