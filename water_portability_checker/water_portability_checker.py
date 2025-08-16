@@ -119,20 +119,20 @@ if submitted:
         if hasattr(model, "predict_proba"):
             proba = model.predict_proba(X)[0]
             potable_prob = float(proba[1])
-        print(pred, potable_prob)
 
     if pred == 1:
-        st.success(f"✅ Water is likely **potable**.")
+        if potable_prob is not None:
+            st.success(f"✅ Water is **Potable** (Probability: {potable_prob:.6f})")
+        else:
+            st.success("✅ Water is **Potable**")
     else:
-        st.error(f"❌ Water is likely **not potable**.")
+        if potable_prob is not None:
+            st.error(f"❌ Water is **Not Potable** (Probability potable: {potable_prob:.6f})")
+        else:
+            st.error("❌ Water is **Not Potable**")
 
     # with st.expander("See parameter-by-parameter checks"):
     #     for name, ok in checks.items():
     #         rng = THRESHOLDS[name] if name != "THMs" else THRESHOLDS["THMs"]
     #         badge = "✅ OK" if ok else "⚠️ Out of range"
     #         st.write(f"- **{name}**: {inputs[name]} (target: {rng[0]}–{rng[1]}) {badge}")
-
-st.caption(
-    "Note: This is a simplified rule-based assessment using common guideline targets. "
-    "For compliance or health decisions, use certified laboratory analysis and local regulations."
-)
