@@ -3,17 +3,17 @@ import numpy as np
 import joblib
 import os
 
-# MODEL_PATH = "water_potability_rf.pkl"
+MODEL_FILE_NAME = "water_potability_rf.pkl"
 
 st.set_page_config(page_title="Water Potability Checker", page_icon="🚰", layout="centered")
 
-st.title("🚰 Water Potability Checker")
+st.title("🚰 Water Potability Checker By Khizar Shujaat")
 
 # Get the directory where this script lives
 BASE_DIR = os.path.dirname(__file__)
 
 # Point to the pkl file in the same folder
-MODEL_PATH = os.path.join(BASE_DIR, "water_potability_rf.pkl")
+MODEL_PATH = os.path.join(BASE_DIR, MODEL_FILE_NAME)
 
 # Load model bundle
 if not os.path.exists(MODEL_PATH):
@@ -66,12 +66,12 @@ with st.form("water_form", clear_on_submit=False):
 THRESHOLDS = {
     "pH": (0.0, 14.0),
     "Hardness": (0, 400),
-    "TDS": (0, 100000),
+    "Solids": (0, 100000),
     "Chloramines": (0, 100),
     "Sulfate": (0, 1000),
     "Conductivity": (0, 1000),
     "Organic Carbon": (0, 100),
-    "THMs": (0, 1000),
+    "Trihalomethanes": (0, 1000),
     "Turbidity": (0, 100),
 }
 
@@ -82,17 +82,17 @@ def evaluate_potability(inputs):
     checks = {
         "pH": check_range(inputs["pH"], *THRESHOLDS["pH"]),
         "Hardness": check_range(inputs["Hardness"], *THRESHOLDS["Hardness"]),
-        "TDS": check_range(inputs["TDS"], *THRESHOLDS["TDS"]),
+        "Solids": check_range(inputs["Solids"], *THRESHOLDS["Solids"]),
         "Chloramines": check_range(inputs["Chloramines"], *THRESHOLDS["Chloramines"]),
         "Sulfate": check_range(inputs["Sulfate"], *THRESHOLDS["Sulfate"]),
         "Conductivity": check_range(inputs["Conductivity"], *THRESHOLDS["Conductivity"]),
         "Organic Carbon": check_range(inputs["Organic Carbon"], *THRESHOLDS["Organic Carbon"]),
-        "THMs": check_range(inputs["THMs"], *THRESHOLDS["THMs"]),
+        "Trihalomethanes": check_range(inputs["Trihalomethanes"], *THRESHOLDS["Trihalomethanes"]),
         "Turbidity": check_range(inputs["Turbidity"], *THRESHOLDS["Turbidity"]),
     }
     values = [
-        inputs["pH"], inputs["Hardness"], inputs["TDS"], inputs["Chloramines"], inputs["Sulfate"],
-        inputs["Conductivity"], inputs["Organic Carbon"], inputs["THMs"], inputs["Turbidity"]
+        inputs["pH"], inputs["Hardness"], inputs["Solids"], inputs["Chloramines"], inputs["Sulfate"],
+        inputs["Conductivity"], inputs["Organic Carbon"], inputs["Trihalomethanes"], inputs["Turbidity"]
     ]
     X = np.array([values], dtype=float)
 
@@ -105,12 +105,12 @@ if submitted:
         inputs = {
             "pH": ph,
             "Hardness": hardness,
-            "TDS": solids,
+            "Solids": solids,
             "Chloramines": chloramines,
             "Sulfate": sulfate,
             "Conductivity": conductivity,
             "Organic Carbon": organic_carbon,
-            "THMs": trihalomethanes,
+            "Trihalomethanes": trihalomethanes,
             "Turbidity": turbidity,
         }
         # potable, score, checks = evaluate_potability(inputs)
@@ -130,6 +130,6 @@ if submitted:
 
     with st.expander("See parameter-by-parameter checks"):
         for name, ok in checks.items():
-            rng = THRESHOLDS[name] if name != "THMs" else THRESHOLDS["THMs"]
+            rng = THRESHOLDS[name] if name != "Trihalomethanes" else THRESHOLDS["Trihalomethanes"]
             badge = "✅ OK" if ok else "⚠️ Out of range"
             st.write(f"- **{name}**: {inputs[name]} (target: {rng[0]}–{rng[1]}) {badge}")
