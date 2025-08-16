@@ -121,15 +121,9 @@ if submitted:
             potable_prob = float(proba[1])
 
     if pred == 1:
-        if potable_prob is not None:
-            st.success(f"✅ Water is **Potable** (Probability: {potable_prob:.6f})")
-        else:
-            st.success("✅ Water is **Potable**")
+        st.success("✅ Water is **Potable**")
     else:
-        if potable_prob is not None:
-            st.error(f"❌ Water is **Not Potable** (Probability potable: {potable_prob:.6f})")
-        else:
-            st.error("❌ Water is **Not Potable**")
+        st.error("❌ Water is **Not Potable**")
 
     # with st.expander("See parameter-by-parameter checks"):
     #     for name, ok in checks.items():
